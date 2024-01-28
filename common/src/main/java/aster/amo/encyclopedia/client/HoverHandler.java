@@ -31,6 +31,30 @@ public class HoverHandler {
     static int page = 0;
     static int maxPage = 1;
 
+    public static void initVanillaExtendedHandlers() {
+        ExtendedItemHandler.register(stack -> stack.getItem() instanceof PotionItem, (lines, stack) -> {
+            if(stack.getItem() instanceof PotionItem) {
+                Potion potion = PotionUtils.getPotion(stack);
+                List<String> potionTypes = new ArrayList<>();
+                potion.getEffects().forEach(effectInstance -> {
+                    potionTypes.add(BuiltInRegistries.MOB_EFFECT.getKey(effectInstance.getEffect()).toString().replace(":", ".").replace("/", "."));
+                });
+                formatRepetition(lines, potionTypes);
+            }
+            return lines;
+        });
+        ExtendedItemHandler.register(stack -> stack.getItem() instanceof EnchantedBookItem || stack.isEnchanted(), (lines, stack) -> {
+            if(stack.getItem() instanceof EnchantedBookItem || stack.isEnchanted()) {
+                List<String> enchantments = new ArrayList<>();
+                EnchantmentHelper.getEnchantments(stack).forEach((enchantmentInstance, level) -> {
+                    enchantments.add(BuiltInRegistries.ENCHANTMENT.getKey(enchantmentInstance).toString().replace(":", ".").replace("/", "."));
+                });
+                formatRepetition(lines, enchantments);
+            }
+            return lines;
+        });
+    }
+
     public static void tick(int key) {
         Minecraft instance = Minecraft.getInstance();
         long window = instance.getWindow().getWindow();
@@ -66,15 +90,11 @@ public class HoverHandler {
             return;
         ResourceLocation stackName = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String transString = "encyclopedia." + stackName.toString().replace(":", ".") + ".desc." + page;
-        MutableComponent component = Component.translatable(transString);
         if (I18n.exists(transString)) {
             String translated = I18n.get(transString);
-            // if string contains newline \n split it into multiple lines
             String[] split = translated.split("\n");
             List<Component> transLines = new ArrayList<>();
-            Style prevStyle = component.getStyle();
             for (String s : split) {
-                MutableComponent comp = Component.literal(s);
                 transLines.add(Component.literal(s));
             }
             if (lines.size() < 2) {
@@ -82,21 +102,9 @@ public class HoverHandler {
             } else {
                 lines.addAll(1, transLines);
             }
-            if(stack.getItem() instanceof PotionItem) {
-                Potion potion = PotionUtils.getPotion(stack);
-                List<String> potionTypes = new ArrayList<>();
-                potion.getEffects().forEach(effectInstance -> {
-                    potionTypes.add(BuiltInRegistries.MOB_EFFECT.getKey(effectInstance.getEffect()).toString().replace(":", ".").replace("/", "."));
-                });
-                formatRepetition(lines, potionTypes);
-            }
-            if(stack.getItem() instanceof EnchantedBookItem || stack.isEnchanted()) {
-                List<String> enchantments = new ArrayList<>();
-                EnchantmentHelper.getEnchantments(stack).forEach((enchantmentInstance, level) -> {
-                    enchantments.add(BuiltInRegistries.ENCHANTMENT.getKey(enchantmentInstance).toString().replace(":", ".").replace("/", "."));
-                });
-                formatRepetition(lines, enchantments);
-            }
+
+            ExtendedItemHandler.addToTooltip(stack, lines);
+
             int maxPage = 0;
             while (I18n.exists("encyclopedia." + stackName.toString().replace(":", ".") + ".desc." + (maxPage))) {
                 maxPage++;
@@ -139,6 +147,32 @@ public class HoverHandler {
                 lines.addAll(index, enchantmentTransLines);
             }
         }
+    }
+
+    private static List<Component> formatRepetitionInternal(List<Component> lines, List<String> enchantments) {
+        for (String enchantment : enchantments) {
+            String enchantmentTransString = "encyclopedia." + enchantment + ".desc." + page;
+            if (I18n.exists(enchantmentTransString)) {
+                String enchantmentTranslated = I18n.get(enchantmentTransString);
+                String[] enchantmentSplit = enchantmentTranslated.split("\n");
+                List<Component> enchantmentTransLines = new ArrayList<>();
+                // find the line in the existing tooltip that contains the enchantment name
+                int index = lines.size();
+                String searchLine = enchantment.toLowerCase().split("\\.")[1];
+                for (int i = 0; i < lines.size(); i++) {
+                    Component line = lines.get(i);
+                    if (line.getString().toLowerCase().contains(searchLine)) {
+                        index = i+1;
+                        break;
+                    }
+                }
+                for (String s : enchantmentSplit) {
+                    enchantmentTransLines.add(Component.literal(s));
+                }
+                return enchantmentTransLines;
+            }
+        }
+        return List.of();
     }
 
     private static void updateHovered(ItemStack stack) {
