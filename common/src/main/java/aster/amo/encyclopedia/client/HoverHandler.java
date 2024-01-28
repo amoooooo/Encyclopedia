@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HoverHandler {
-    public static final KeyMapping INFO_KEY = new KeyMapping("key.encyclopedia.extended", InputConstants.Type.SCANCODE, InputConstants.KEY_GRAVE, "key.categories.misc");
+    public static final KeyMapping INFO_KEY = new KeyMapping("key.encyclopedia.extended", InputConstants.Type.SCANCODE, InputConstants.KEY_I, "key.categories.misc");
     static ItemStack hoveredStack = ItemStack.EMPTY;
     static ItemStack trackingStack = ItemStack.EMPTY;
     static boolean isExtended = false;
