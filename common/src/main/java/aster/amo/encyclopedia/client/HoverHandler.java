@@ -33,24 +33,20 @@ public class HoverHandler {
 
     public static void initVanillaExtendedHandlers() {
         ExtendedItemHandler.register(stack -> stack.getItem() instanceof PotionItem, (lines, stack) -> {
-            if(stack.getItem() instanceof PotionItem) {
-                Potion potion = PotionUtils.getPotion(stack);
-                List<String> potionTypes = new ArrayList<>();
-                potion.getEffects().forEach(effectInstance -> {
-                    potionTypes.add(BuiltInRegistries.MOB_EFFECT.getKey(effectInstance.getEffect()).toString().replace(":", ".").replace("/", "."));
-                });
-                formatRepetition(lines, potionTypes);
-            }
+            Potion potion = PotionUtils.getPotion(stack);
+            List<String> potionTypes = new ArrayList<>();
+            potion.getEffects().forEach(effectInstance -> {
+                potionTypes.add(BuiltInRegistries.MOB_EFFECT.getKey(effectInstance.getEffect()).toString().replace(":", ".").replace("/", "."));
+            });
+            formatRepetition(lines, potionTypes);
             return lines;
         });
         ExtendedItemHandler.register(stack -> stack.getItem() instanceof EnchantedBookItem || stack.isEnchanted(), (lines, stack) -> {
-            if(stack.getItem() instanceof EnchantedBookItem || stack.isEnchanted()) {
-                List<String> enchantments = new ArrayList<>();
-                EnchantmentHelper.getEnchantments(stack).forEach((enchantmentInstance, level) -> {
-                    enchantments.add(BuiltInRegistries.ENCHANTMENT.getKey(enchantmentInstance).toString().replace(":", ".").replace("/", "."));
-                });
-                formatRepetition(lines, enchantments);
-            }
+            List<String> enchantments = new ArrayList<>();
+            EnchantmentHelper.getEnchantments(stack).forEach((enchantmentInstance, level) -> {
+                enchantments.add(BuiltInRegistries.ENCHANTMENT.getKey(enchantmentInstance).toString().replace(":", ".").replace("/", "."));
+            });
+            formatRepetition(lines, enchantments);
             return lines;
         });
     }
@@ -137,7 +133,7 @@ public class HoverHandler {
                 for (int i = 0; i < lines.size(); i++) {
                     Component line = lines.get(i);
                     if (line.getString().toLowerCase().contains(searchLine)) {
-                        index = i+1;
+                        index = i + 1;
                         break;
                     }
                 }
@@ -162,7 +158,7 @@ public class HoverHandler {
                 for (int i = 0; i < lines.size(); i++) {
                     Component line = lines.get(i);
                     if (line.getString().toLowerCase().contains(searchLine)) {
-                        index = i+1;
+                        index = i + 1;
                         break;
                     }
                 }
