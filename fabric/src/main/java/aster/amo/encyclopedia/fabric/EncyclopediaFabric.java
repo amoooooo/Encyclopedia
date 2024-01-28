@@ -3,6 +3,7 @@ package aster.amo.encyclopedia.fabric;
 import aster.amo.encyclopedia.Encyclopedia;
 import aster.amo.encyclopedia.client.HoverHandler;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -19,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 
 import static aster.amo.encyclopedia.client.HoverHandler.INFO_KEY;
 
-public class EncyclopediaFabric implements ModInitializer {
+public class EncyclopediaFabric implements ClientModInitializer {
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         Encyclopedia.init();
         KeyBindingHelper.registerKeyBinding(INFO_KEY);
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
