@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "encyclopedia",
+  "version": "${version}",
+
+  "name": "Encyclopedia",
+  "description": "",
+  "authors": [],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "aster.amo.encyclopedia.fabric.EncyclopediaFabric"
+    ]
+  },
+  "mixins": [
+    "encyclopedia.mixins.json",
+    "encyclopedia-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.6",
+    "minecraft": ">=1.20.1"
+  }
+}

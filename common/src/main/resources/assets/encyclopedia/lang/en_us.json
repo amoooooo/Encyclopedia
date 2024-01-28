@@ -1,0 +1,12 @@
+{
+  "encyclopedia.minecraft.golden_apple.desc.0": "§6A §drare §6apple that can be eaten to restore hunger\n§6and grant temporary bonus hearts.",
+  "encyclopedia.minecraft.golden_apple.desc.1": "§3This is a page test.",
+  "encyclopedia.minecraft.apple.desc.0": "§7A §ccommon §7apple that can be eaten to restore hunger.",
+  "encyclopedia.minecraft.apple.desc.1": "§cThis is a page test.\n§cLook at my\n§cnew lines!",
+  "encyclopedia.minecraft.enchanted_book.desc.0": "§7An enchanted book that can apply an enchantment\n§7to an item when combined in an anvil.",
+  "encyclopedia.minecraft.potion.desc.0": "§7A potion that can be consumed to grant an effect\n§7for a limited time.",
+  "encyclopedia.minecraft.speed.desc.0": "  §8A potion that grants the ability to §brun faster.",
+  "encyclopedia.minecraft.sharpness.desc.0": "  §8A mystical enchantment that increases the §cdamage\n  §8of your weapon.",
+  "encyclopedia.minecraft.fire_aspect.desc.0": "  §8A mystical enchantment that sets your foes\n  §8on §6fire §8when you hit them.",
+  "key.encyclopedia.extended": "Extended Tooltip Information"
+}
