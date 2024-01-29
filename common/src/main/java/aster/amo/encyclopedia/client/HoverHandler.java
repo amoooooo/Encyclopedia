@@ -30,6 +30,7 @@ public class HoverHandler {
     static boolean isExtended = false;
     static int page = 0;
     static int maxPage = 1;
+    private static int innerCooldown = 0;
 
     public static void initVanillaExtendedHandlers() {
         ExtendedItemHandler.register(stack -> stack.getItem() instanceof PotionItem, (lines, stack) -> {
@@ -54,13 +55,15 @@ public class HoverHandler {
     public static void tick(int key) {
         Minecraft instance = Minecraft.getInstance();
         long window = instance.getWindow().getWindow();
-        if (InputConstants.isKeyDown(window, key)) {
-            if (!isExtended) {
-                isExtended = true;
-                return;
-            }
+        if (InputConstants.isKeyDown(window, key) && innerCooldown == 0) {
+            isExtended = !isExtended;
+            innerCooldown = 10;
+            return;
         } else {
-            isExtended = false;
+            innerCooldown--;
+            if (innerCooldown < 0) {
+                innerCooldown = 0;
+            }
         }
         hoveredStack = ItemStack.EMPTY;
     }
